@@ -1,0 +1,51 @@
+
+@media (min-width: 941px) { 
+header#siteHeader {  
+	padding: 20px 0 50px; 
+	border-bottom:1px solid #dfdfdf;
+	background: #FFF;
+	position: relative;
+}
+
+#siteNav { 
+   position: relative;
+   top: -81px;
+   margin-bottom: -81px;
+}
+
+#siteNav ul { 
+	max-width: 980px; 
+	margin: 0 auto; 
+	background: transparent url('https://dl.dropboxusercontent.com/u/17615192/Website/craiglovesjasper/gfx/nav-bg.png') 0 0 no-repeat;
+	padding-top: 5px;
+	height: 51px;
+}
+
+#siteNav a { 
+	font-family: stencil-std, sans-serif;
+	font-size: 16px; 
+	color: #8B4789; 
+} 
+
+/* bootstrap large screen nav menu */
+
+	#navOurStory, 
+	#navTheProposal {
+		float: left;
+		padding-left: 25px;
+	}
+
+
+	#navTheVideo, 
+	#navTheHoneymoon {
+		float: right;
+	}
+
+	#navTheHoneymoon { margin-right: 54px; }
+
+	#siteLogo {  
+		text-align:center; 
+		position: relative;
+		left: 25px;
+	}
+}

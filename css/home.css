@@ -1,0 +1,101 @@
+#content section {
+	padding: 5px 15px 10px;
+}
+
+section#hello {
+	padding: 25px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+	background: #f8f8f8;
+}
+
+section#hello img {
+	-moz-transform: rotate(-2deg);
+		-webkit-transform:rotate(-2deg);
+		-o-transform:rotate(-2deg);
+		-ms-transform:rotate(-2deg);
+		box-shadow: 0 0 1em #dfdfdf;
+		margin: 0 1em;
+}
+
+section#hello p {
+	font-family: droid-sans, serif;
+	font-size: 16px; 
+}
+
+section#vitals {
+	background: #fff;
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+	text-align: center;
+}
+
+section#vitals ul { 
+	list-style: none; 
+	padding: 0;
+}
+
+section#howWeMet {
+	background: #fff;
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+}
+
+section#howWeMet p {
+	padding: 0 4em;
+	font-family: droid-sans, serif;
+	font-size: 16px; 
+        line-height: 24px;
+}
+
+section#ourFairyTale { 
+	background-color: #f8f8f8; 
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+}
+
+section#theVideo {
+	background: #FFF;
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+	text-align: center;		
+}
+
+section#weddingPhotos {
+
+}
+
+section#weddingPhotos h2 { margin-bottom: 25px; }
+
+section#weddingPhotos p {
+	padding: 0 4em;
+	font-family: droid-sans, serif;
+	font-size: 16px; 
+    line-height: 24px;
+	margin-bottom: 25px; 
+}
+
+section#weddingPhotos #gallery { margin-top: 20px; }
+
+section#weddingPhotos #gallery li {
+    height: auto;
+    max-width: auto;
+    min-width: 150px;
+    text-align: center;
+    border: 1px solid #f8f8f8;
+    padding: 0;
+}
+
+section#weddingPhotos #gallery li img {
+  vertical-align: middle;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+}
+
+section#weddingPhotos #gallery .thumbnail { border: none; line-height: 190px; background-color: inherit;}
+section#weddingPhotos #gallery li:hover { 
+  background-color: #f8f8f8;
+  cursor: auto;
+}
+
+#myModal .modal-dialog { width: 800px; }

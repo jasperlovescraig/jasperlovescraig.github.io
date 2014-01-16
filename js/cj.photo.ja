@@ -1,0 +1,140 @@
+/**
+* @file Scripts specific to photo api
+* Created:  07/09/2013
+* Modified: 07/09/2013
+*/
+
+/**
+* CJ
+* @namespace
+* @type {object}
+* @global
+* @public
+*/
+var CJ = CJ|| {};
+
+/**
+* Immediately-Invoked Function Expression.
+*
+* @function
+* @param {object} $ - Global jQuery object.
+*/
+(function ($) {
+
+    // strict js
+    'use strict';
+
+    /**
+    * Creates an instance of JcycleConstructor.
+    * Modified: 07/09/2013
+    *
+    * @constructor
+    * @author Craig Lucas <clucas@everydayhealthinc.com>
+    */
+   CJ.PhotoConstructor = function () { };
+
+    /**
+    * Inheritable methods.
+    *
+    * @type {object}
+    */
+   CJ.PhotoConstructor.prototype = {
+
+        /**
+        * Initialization methods.
+        * Modified: 07/09/2013
+        *
+        * @method init
+        * @author Craig Lucas <clucas@everydayhealthinc.com>
+        * @public
+        */
+        init: function () {
+            // initialize object setups
+            this.objectInit();
+        },
+
+        /**
+        * Initialize objects
+        * Modified: 07/09/2013
+        *
+        * @method objectInit
+        * @author Craig Lucas <clucas@everydayhealthinc.com>
+        * @public
+        */
+        objectInit: function () {
+            
+        },
+
+        /**
+        * tipsWeekly object.
+        * Modified: 07/09/2013
+        *
+        * @type {object}
+        * @author Craig Lucas <clucas@everydayhealthinc.com>
+        * @public
+        */
+        twitter: {
+
+            /**
+             * Returns an object containing the given twitter photo set
+             * Modified: 09/21/2013
+             *
+             * @method getTwitterPhotoSet
+             * @param {number} setID - num of slides.
+             * @author Craig Lucas <clucas@everydayhealthinc.com>
+             * @public
+            */
+            getTwitterPhotoSet: function (setID) {
+
+		 //SET API CALL BASED ON INPUT
+    var apiCall = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=44e9eeb46a09d58f4ab0c2782f23e906&photoset_id=72157635775038645&format=json&auth_token=72157635773558854-8c76bd4f0bf448c0&api_sig=96418ea0ff39d27a34464df21825a010"
+
+    //PRINT API CALL (DEBUG)    
+    $("<span>").html(apiCall+"<br>").appendTo("body");
+
+    //SEND API CALL AND RETURN RESULTS TO A FUNCTION    
+    $.getJSON(apiCall, function(data){
+
+        //LOOP THROUGH DATA
+        $.each(data.photoset.photo, function(i,photo){
+
+        //LINK TO IMAGE SOURCE
+        var img_src = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_" + "s.jpg";
+
+        //LINK TO IMAGE PAGE (REQUIRED BY FLICKR TOS)
+        var a_href = "http://www.flickr.com/photos/" + data.photoset.owner + "/" + photo.id + "/";
+
+        //PLACE IMAGE IN IMAGE TAG AND APPEND TO IMAGES DIV 
+        $("<img/>").attr("src", img_src).appendTo("#image_block")
+
+        //WRAP IN LINK
+        .wrap(("<a href='" + a_href + "'></a>"))
+      });
+
+    });
+
+
+
+            }
+
+        }
+    };
+
+    /**
+    * Instantiate object.
+    *
+    * @type {object}
+    * @see {@linkCJ.PhotoConstructor}
+    * @public
+    */
+   CJ.Photo = newCJ.PhotoConstructor();
+
+    // dom ready
+    $(function () {
+
+        // page init
+       CJ.Photo.init();
+
+    });
+
+} (jQuery, window));
