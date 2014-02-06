@@ -1,39 +1,71 @@
 
-@media (min-width: 941px) { 
+
 header#siteHeader {  
-	padding: 20px 0 50px; 
+	padding: 20px 0 20px; 
 	border-bottom:1px solid #dfdfdf;
 	background: #FFF;
 	position: relative;
 }
 
-#siteNav { 
-   position: relative;
-   top: -81px;
-   margin-bottom: -81px;
-}
+#siteHeader h1 { font-size: 2em; }
+#siteHeader .ourdate { font-size: 1em; }
 
-#siteNav ul { 
-	max-width: 980px; 
-	margin: 0 auto; 
-	background: transparent url('https://dl.dropboxusercontent.com/u/17615192/Website/craiglovesjasper/gfx/nav-bg.png') 0 0 no-repeat;
-	padding-top: 5px;
-	height: 51px;
+#siteHeader h1,
+#siteHeader .ourdate,
+#siteHeader img { position: relative; z-index: 1001; text-align:center; }
+
+#siteLogo {  
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+} 
+
+#siteNav {
+    text-align: center;
+    background-color: #fff;    
 }
 
 #siteNav a { 
 	font-family: stencil-std, sans-serif;
-	font-size: 16px; 
+	font-size: 1em; 
+    line-height: 1em;
 	color: #8B4789; 
-} 
+}       
 
-/* bootstrap large screen nav menu */
+/* bootstrap medium devices */
+@media (min-width: 768px) {
+    
+    header#siteHeader {  
+        padding: 20px 0 50px; 
+    }    
+    
+    #siteLogo {  
+        text-align:center; 
+        position: relative;
+        left: -7px;
+        z-index: 1001;
+        width: 17.5%;
+        margin: 0 auto;
+        background-color: #fff;    
+    }     
+    
+    #siteNav { 
+        position: relative;
+        top: -81px;
+        margin-bottom: -81px;
+        border: none;
+        text-align: left;
+    }
 
-	#navOurStory, 
-	#navTheProposal {
-		float: left;
-		padding-left: 25px;
-	}
+    #siteNav ul { 
+        margin-left: 0; 
+        width: 100%;
+        padding: 5px 0 0;
+        height: 51px;
+        border-color: #dfdfdf;
+        border-style: solid;
+        border-width: 1px 0;           
+    }
 
 
 	#navTheVideo, 
@@ -41,11 +73,8 @@ header#siteHeader {
 		float: right;
 	}
 
-	#navTheHoneymoon { margin-right: 54px; }
 
-	#siteLogo {  
-		text-align:center; 
-		position: relative;
-		left: 25px;
-	}
 }
+
+
+

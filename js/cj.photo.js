@@ -1,7 +1,7 @@
 /**
  * @file Scripts specific to photo api
- * Created:  07/09/2013
- * Modified: 07/09/2013
+ * Created:  01/25/2014
+ * Modified: 01/25/2014
  */
 
 /**
@@ -25,11 +25,11 @@ var CJ = CJ || {};
 	'use strict';
 
 	/**
-	 * Creates an instance of JcycleConstructor.
-	 * Modified: 07/09/2013
+	 * Creates an instance of PhotoConstructor
+	 * Modified: 01/25/2014
 	 *
 	 * @constructor
-	 * @author Craig Lucas <clucas@everydayhealthinc.com>
+	 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 	 */
 	CJ.PhotoConstructor = function () {};
 
@@ -42,23 +42,23 @@ var CJ = CJ || {};
 
 		/**
 		 * Initialization methods.
-		 * Modified: 07/09/2013
+		 * Modified: 01/25/2014
 		 *
 		 * @method init
-		 * @author Craig Lucas <clucas@everydayhealthinc.com>
+		 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 		 * @public
 		 */
 		init : function () {
 			this.objectInit();
-			this.bindEvents();
+            this.bindEvents();
 		},
 
 		/**
 		 * Initialize objects
-		 * Modified: 07/09/2013
+		 * Modified: 01/25/2014
 		 *
 		 * @method objectInit
-		 * @author Craig Lucas <clucas@everydayhealthinc.com>
+		 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 		 * @public
 		 */
 		objectInit : function () {
@@ -67,55 +67,42 @@ var CJ = CJ || {};
 
 		/**
 		 * bind events
-		 * Modified: 07/09/2013
+		 * Modified: 01/25/2014
 		 *
 		 * @method bindEvents
-		 * @author Craig Lucas <clucas@everydayhealthinc.com>
+		 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 		 * @public
 		 */
 		bindEvents : function () {
-			var $photoDiv = $('#weddingPhotos'),
-			setID,
-			img,
-			path,
-			_self = this;
-
-			$photoDiv.find('#gallery .thumbnail').on("click.launchFullScreen", function (e) {
-				//e.preventDefault();
-				img = $(this).find('src');
-				path = img.attr('src').replace('_q', '_c');
-				$('#myModal .modal-body.flexslider').html('<img src="' + path + '" />');
-				$('#myModal').modal('show');
-				e.preventDefault();
-				return false;
-
-			});			
-			
-			$photoDiv.find('.nav a').on("click.getPhotoSet", function (e) {
-				setID = $(this).data('setid');
-				_self.Photoset.load(setID);
-				e.preventDefault();
-			});
+            
+            this.$siteNav = $('#siteNav');
+            
+            // click event for thumbnail
+            this.$siteNav.find('a').on("click.anchor", function (e) {
+                e.preventDefault();
+                CJ.Utilities.smoothAnchors(e);     
+            });
+            
 
 		},
-		/**
-		 * tipsWeekly object.
-		 * Modified: 07/09/2013
+
+        /**
+		 * Photoset object.
+		 * Modified: 01/25/2014
 		 *
 		 * @type {object}
-		 * @author Craig Lucas <clucas@everydayhealthinc.com>
+		 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 		 * @public
 		 */
 		Photoset : {
 
 			/**
-			 * Returns an object containing the given twitter photo set
-			 * Modified: 09/21/2013
+			 * Loads the given twitter photo set
+			 * Modified: 01/25/2014
 			 *
-			 * @method getTwitterPhotoSet
-			 * @param {number} setID - num of slides.
-			 * @param {string or jq object} setID - num of slides.
-			 * @author Craig Lucas <clucas@everydayhealthinc.com>
+			 * @method load
+			 * @param {string} setID - set id number
+			 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 			 * @public
 			 */
 			load : function (setID) {
@@ -132,20 +119,29 @@ var CJ = CJ || {};
 				//SEND API CALL AND RETURN RESULTS TO A FUNCTION
 				$.getJSON(apiCall, function (data) {
 					theData = data.photoset.photo;
-					//_self.slider.load(theData);
-					_self.tab.load(theData);
+					_self.tab.load(theData, _self);
+                    _self.slider.load(theData);
 				});
 
 			},
-
+            
+            /**
+             * Slider object.
+             * Modified: 01/25/2014
+             *
+             * @type {object}
+             * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+             * @public
+             */
 			slider : {
+                
 				/**
 				 * loads the slider
-				 * Modified: 09/21/2013
+				 * Modified: 01/25/2014
 				 *
 				 * @method load
 				 * @param {object} set - photoset object
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
 				load : function (set) {
@@ -153,38 +149,48 @@ var CJ = CJ || {};
 					// vars
 					var html;
 
-					this.setupObj();
+                    // setup slider
+					this.setup();
+                    
+                    // build slider html
 					html = this.html(set);
 
-					// create articleNav
-					this.build(html);
-
-					this.initialize(this);
+					// inject into DOM
+					this.inject(html);
+                    
+                    // instantiate the slider
+					this.instantiate(this, "1");
+                    
+                    // bind events
+                    this.events.bind(this);
 
 				},
 
 				/**
-				 * setup the "tab" object
-				 * Modified: 09/21/2013
+				 * setup the "slider" object
+				 * Modified: 01/25/2014
 				 *
 				 * @method load
 				 * @param {object} set - photoset object
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				setupObj : function (set) {
-					this.$tab = '#slider';
-					this.flexSlider = '//cdnjs.cloudflare.com/ajax/libs/flexslider/2.2.0/jquery.flexslider-min.js';
-					this.$carousel = $('.flexslider');
+				setup : function (set) {
+                    
+					this.$slider = $('#slider');
+                    
+                    // init image unveil plugin
+                     $("img").unveil();
 				},
+                
 
 				/**
-				 * build html for tab
-				 * Modified: 09/21/2013
+				 * build html for slider
+				 * Modified: 01/25/2014
 				 *
-				 * @method load
+				 * @method build
 				 * @param {object} set - photoset object
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
 				html : function (set) {
@@ -204,8 +210,14 @@ var CJ = CJ || {};
 						//LINK TO IMAGE SOURCE
 						full_src = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_" + "c.jpg";
 						link = "http://www.flickr.com/photos/100879861@N05/" + photo.id + "/in/set-72157635776920973/lightbox/";
-
-						linkHtml = '<li><a data-toggle="modal" data-target="#myModal"><img data-src="' + full_src + '" class="lazy" /></a></li>';
+                        
+                        if (ct === 0) {
+                            linkHtml = '<div class="item active"><img src="' + full_src + '" + src="" + data-title="' + photo.title + '" /></div>';
+                        }
+                        
+                        else {
+                            linkHtml = '<div class="item"><img data-src="' + full_src + '" data-title="' + photo.title + '" /></div>';
+                        }
 
 						listItem[ct] = linkHtml;
 
@@ -213,104 +225,202 @@ var CJ = CJ || {};
 						ct += 1;
 
 					});
-
-					// build html string
-					html = listItem.join('');
-					return html;
+                    
+                    // build html string
+                    html = '<div class="carousel-inner">' + listItem.join('') + '</div>';
+					html +=  '<a class="left carousel-control" href="#slider" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control" href="#slider" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>';   
+					
+                    return html;
 
 				},
 
 				/**
-				 * Build photoset tab <br>
+				 * Inject photoset tab to DOM <br>
 				 * Modified: 08/29/2013
 				 *
-				 * @method build
-				 * @param {object} _parent - Reference to CuSo.Storylogues
+				 * @method inject
 				 * @param {string} html - Share bar HTML.
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				build : function (html) {
-					$('#slider').empty().append(html);
+				inject : function (html) {
+					this.$slider.empty().append(html);
 				},
 
+                /**
+                 * events object.
+                 * Modified: 01/25/2014
+                 *
+                 * @type {object}
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */
+                 events : {
+                     
+                    /**
+                     * bind events for slider <br>
+                     * Modified: 08/29/2013
+                     *
+                     * @method bind
+                     * @param {object} _slider - Reference to CJ.Photo.Photoset.slider
+                     * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                     * @public
+                     */                                          
+                    bind: function (_slider) {
+                        
+                        var $photoDiv = $('#weddingPhotos'),
+                        $thumb,
+                        index,    
+                        _self = this;		
+                        
+                        // click event for thumbnail
+                        $photoDiv.find('a.thumbnail').on("click.launchModal", function (e) {
+                            
+                            $thumb = $(this);
+                            
+                            index = $thumb.parent().index();
+                            
+                            $('#slider').carousel(index);
+                            
+                            //launch the modal
+                            _slider.modal(e);
+                            
+                        });
+
+                        
+                    }                        
+                     
+                 },                
+                
 				/**
-				 * initialize flexslider <br>
+				 * instantiate flexslider <br>
 				 * Modified: 08/29/2013
 				 *
-				 * @method build
-				 * @param {object} _carousel - Reference to CuSo.Storylogues
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
+				 * @method instantiate
+				 * @param {object} _slider - Reference to CJ.Photo.Photoset.slider
+                 * @param {object} index - starging slide number
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				initialize : function (_carousel) {
-					// load flexslider
-					$.getScript(_carousel.flexSlider).done(function () {
-
-						// instantiate flexslider
-						_carousel.$carousel.append()
-						.addClass('carousel')
-						.flexslider({
-							animation : 'slide',
-							animationLoop : false,
-							animationSpeed : 1000,
-							controlNav : false,
-							directionNav : true,
-							slideshow : true,
-							smoothHeight : true,
-							move : 1,
-							touch : false,
-							start : function (slide) {},
-							after : function (slide) {}
-						});
-					});
-				}
+				instantiate : function (_slider) {
+                    
+                    var _self = this;
+                                        
+                    // instantiate flexslider
+                    _slider.$slider.append()
+                    .addClass('carousel')
+                    .carousel({
+                        interval: false
+                    });
+                    
+                    _slider.$slider.on('slide.bs.carousel', function (e) {
+                        _self.slide(e);
+                    });                                                            
+				},
+                
+				/**
+				 * Slider Slide Method <br>
+				 * Modified: 08/29/2013
+				 *
+				 * @method slide
+                 * @param {object} event - slider event object
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+				 * @public
+				 */  
+                 slide : function (event) {
+                    
+                    var $activeSlide,
+                        $nextSlide,
+                        $activeImage;                    
+                    
+                    $activeSlide = $(event.target).find('.carousel-inner > .item.active');
+                    $nextSlide = $(event.relatedTarget);
+                    $activeImage = $nextSlide.find('img');
+                    
+                    $activeImage.attr('src', $activeImage.data('src'));
+                     
+                 },
+                
+				/**
+				 * Launch the Slider Modal<br>
+				 * Modified: 08/29/2013
+				 *
+				 * @method modal
+                 * @param {object} event - slider event object
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+				 * @public
+				 */ 
+                modal: function (e) {
+                    
+                    var title = $('#weddingPhotos .active a').data('title');
+                    
+                    this.$modal = $('#myModal');
+                    this.$modal.find('.modal-title').html(title);
+                    this.$modal.modal('show');
+                }
+                
+                
 			},
-
+            
+            /**
+             * Tab object.
+             * Modified: 01/25/2014
+             *
+             * @type {object}
+             * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+             * @public
+             */            
 			tab : {
 				/**
 				 * loads the tab
-				 * Modified: 09/21/2013
+				 * Modified: 01/25/2014
 				 *
 				 * @method load
 				 * @param {object} set - photoset object
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				load : function (set) {
+				load : function (set, _photoset) {
 
 					// vars
 					var html;
 
-					this.setupObj();
+                    // setup tab
+					this.setup(_photoset);
+                    
+                    // build tab html
 					html = this.html(set);
 
-					// create articleNav
-					this.build(html);
+					// inject into DOM
+					this.inject(html);
+                    
+                    // instantiate the slider
+					//this.instantiate(this);
 
-					this.bindEvents();
 				},
 
 				/**
 				 * setup the "tab" object
-				 * Modified: 09/21/2013
+				 * Modified: 01/25/2014
 				 *
-				 * @method load
-				 * @param {object} set - photoset object
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
+				 * @method setup
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				setupObj : function (set) {
-					this.$tab = '#gallery';
+				setup : function (_photoset) {
+					
+                    this.$tab = $('#gallery');
+                    this.events.bind(_photoset);
+                    
 				},
 
 				/**
 				 * build html for tab
-				 * Modified: 09/21/2013
+				 * Modified: 01/25/2014
 				 *
-				 * @method load
+				 * @method html
 				 * @param {object} set - photoset object
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
 				html : function (set) {
@@ -350,49 +460,52 @@ var CJ = CJ || {};
 				},
 
 				/**
-				 * Build photoset tab <br>
+				 * Inject photoset tab to DOM <br>
 				 * Modified: 08/29/2013
 				 *
-				 * @method build
-				 * @param {object} _parent - Reference to CuSo.Storylogues
-				 * @param {string} html - Share bar HTML.
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
+				 * @method inject
+				 * @param {string} html - Tab HTML.
+				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				build : function (html) {
-					$('#gallery').empty().append(html);
+				inject : function (html) {
+					this.$tab.empty().append(html);
 				},
-				
-				/**
-				 * Build photoset tab <br>
-				 * Modified: 08/29/2013
-				 *
-				 * @method build
-				 * @param {object} _parent - Reference to CuSo.Storylogues
-				 * @param {string} html - Share bar HTML.
-				 * @author Craig Lucas <clucas@everydayhealthinc.com>
-				 * @public
-				 */
-				
-				bindEvents: function () {
-					var $photoDiv = $('#weddingPhotos'),
-					setID,
-					img,
-					path,
-					_self = this;
+                
+                /**
+                 * events object.
+                 * Modified: 01/25/2014
+                 *
+                 * @type {object}
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */
+                 events : {
+                     
+                    bind: function (_photoset) {
+                        
+                        var $photoDiv = $('#weddingPhotos'),
+                        setID,
+                        img,
+                        path,
+                        $navLink,
+                        $navLi,    
+                        _self = this;		
+                        
+                        $photoDiv.find('.nav a').on("click.getPhotoSet", function (e) {
+                            $navLink = $(this);
+                            setID = $navLink.data('setid');
+                            $navLi = $navLink.parent();
+                            $navLi.addClass('active').siblings().removeClass('active');
+                            
+                            _photoset.load(setID);
+                            e.preventDefault();
+                        });
 
-					$photoDiv.find('#gallery .thumbnail').on("click.launchFullScreen", function (e) {
-						//e.preventDefault();
-						img = $(this).find('img');
-						path = img.attr('src').replace('_q', '_c');
-						$('#myModal .modal-body.flexslider').html('<img src="' + path + '" />');
-						$('#myModal').modal('show');
-						e.preventDefault();
-						return false;
-
-					});
-				}
-				
+                        
+                    }                        
+                     
+                 }
 
 			}
 
