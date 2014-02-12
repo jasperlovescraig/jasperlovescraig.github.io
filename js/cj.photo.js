@@ -62,7 +62,7 @@ var CJ = CJ || {};
 		 * @public
 		 */
 		objectInit : function () {
-			this.Photoset.load();
+			this.Photoset.init();
 		},
 
 		/**
@@ -83,6 +83,9 @@ var CJ = CJ || {};
                 CJ.Utilities.smoothAnchors(e);     
             });
             
+            // init image unveil plugin
+            $("img").unveil(50);             
+            
 
 		},
 
@@ -97,7 +100,7 @@ var CJ = CJ || {};
 		Photoset : {
 
 			/**
-			 * Loads the given twitter photo set
+			 * init the photoset
 			 * Modified: 01/25/2014
 			 *
 			 * @method load
@@ -105,25 +108,182 @@ var CJ = CJ || {};
 			 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 			 * @public
 			 */
-			load : function (setID) {
+			init : function () {
+                
+                // setup the photoset object
+                this.objectInit();
+                
+                // bind events
+                this.events.bind(this);
+            },
 
-				var
-				apiKey = '28a9103300057a9efeda07f46594bd53',
-				apiCall,
-				theData,
-				_self = this,
-				setID = setID != null ? setID : '72157635771860486';
-
-				apiCall = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=" + apiKey + "&photoset_id=" + setID + "&format=json&jsoncallback=?";
-
-				//SEND API CALL AND RETURN RESULTS TO A FUNCTION
-				$.getJSON(apiCall, function (data) {
-					theData = data.photoset.photo;
-					_self.tab.load(theData, _self);
-                    _self.slider.load(theData);
-				});
+            /**
+             * Initialize objects
+             * Modified: 01/25/2014
+             *
+             * @method objectInit
+             * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+             * @public
+             */
+			objectInit : function () {
+                
+                // twitter api key
+                this.apiKey = '28a9103300057a9efeda07f46594bd53';
+                
+                // this will store the jqxhr object
+                this.jqxhr = {};
+                
+                // this will store the given photoset data that is returned
+                this.theData = {};
+                
+                // call the wedding load method
+                this.wedding.load(null, this);                
+                
+                // call the honeymoon load method
+                this.honeymoon.load(null, this);
 
 			},
+            
+            
+            wedding : {
+
+                /**
+                 * Loads the given twitter wedding photo set
+                 * Modified: 01/25/2014
+                 *
+                 * @method load
+                 * @param {string} setID - set id number
+                 * @param {object} _photoset - Reference to CJ.Photo.Photoset
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */
+                load : function (setID, _photoset) {
+    
+                    var _self = this,
+                        apiCall
+                        
+                    setID = setID !== null ? setID : '72157635771860486';    
+                                                           
+                    if (sessionStorage.getItem(setID) !== null) {                         
+                        _photoset.theData = JSON.parse(sessionStorage.getItem(setID));
+                        _photoset.tab.load(_photoset.theData, _self);
+                        _photoset.slider.load(_photoset.theData);                            
+                        
+                    }
+
+                    else {
+                         
+                        apiCall = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=" + _photoset.apiKey + "&photoset_id=" + setID + "&format=json&jsoncallback=?";
+                        
+                        _photoset.jqxhr = $.getJSON(apiCall, function () {});
+                        
+                        _photoset.jqxhr.success(function(data) {
+                            sessionStorage.setItem(setID, JSON.stringify(data));
+                            _photoset.tab.load(data, _self);
+                            _photoset.slider.load(data.theData);                              
+                        });
+                            
+                    }                                      
+    
+                },
+                
+                /**
+                 * Make ajax call to get the wedding photo set
+                 * Modified: 01/25/2014
+                 *
+                 * @method load
+                 * @param {string} setID - set id number
+                 * @param {object} _photoset - Reference to CJ.Photo.Photoset
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */                
+                get : function (setID, _photoset) {
+                    
+
+                }
+                
+            },
+            
+            honeymoon : {
+                
+                /**
+                 * Loads the given twitter honeymoon photo set
+                 * Modified: 01/25/2014
+                 *
+                 * @method load
+                 * @param {string} setID - set id number
+                 * @param {object} _photoset - Reference to CJ.Photo.Photoset
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */
+                load : function (setID, _photoset) {
+    
+                    var apiCall;
+							
+                        setID = setID !== null ? setID : '72157635771860486';
+                        apiCall = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=" + _photoset.apiKey + "&photoset_id=" + setID + "&format=json&jsoncallback=?";
+    
+                    //SEND API CALL AND RETURN RESULTS TO A FUNCTION
+                    _photoset.jqxhr = $.getJSON(apiCall, function () {});
+                    
+                    _photoset.jqxhr.success(function(data) {                
+                        _photoset.theData = data;
+                        _photoset.slider.load(_photoset.theData);
+                    });
+    
+                }                
+                
+            },
+                                    
+            /**
+             * events object.
+             * Modified: 01/25/2014
+             *
+             * @type {object}
+             * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+             * @public
+             */
+             events : {
+                 
+            
+                /**
+                 * bind photoset events
+                 * Modified: 01/25/2014
+                 *
+                 * @method bind
+                 * @param {object} _photoset - Reference to CJ.Photo.Photoset
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */                 
+                bind: function (_photoset) {
+                    
+                    var $content = $('#content'),
+                    $navLink,
+                    $navLi,
+                    navData;	
+                    
+                    $content.find('a[data-setid]').on("click.getPhotoSet", function (e) {
+                        
+                        $navLink = $(this);
+                        navData = $navLink.data();
+                        $navLi = $navLink.parent();
+                        $navLi.addClass('active').siblings().removeClass('active');                        
+                        
+                        if (typeof _photoset[navData.setType].load === 'function') {
+                        
+                            // load the photoset 
+                            _photoset[navData.setType].load(navData.setid, _photoset);
+                                                        
+                        }
+                        
+                        e.preventDefault();
+                        
+                    });
+
+                    
+                }                        
+                 
+             },            
             
             /**
              * Slider object.
@@ -162,7 +322,7 @@ var CJ = CJ || {};
 					this.instantiate(this, "1");
                     
                     // bind events
-                    this.events.bind(this);
+                    this.events.bind(this);                    
 
 				},
 
@@ -171,16 +331,15 @@ var CJ = CJ || {};
 				 * Modified: 01/25/2014
 				 *
 				 * @method load
-				 * @param {object} set - photoset object
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				setup : function (set) {
+				setup : function () {
                     
 					this.$slider = $('#slider');
-                    
-                    // init image unveil plugin
-                     $("img").unveil();
+                    this.$sliderInner = this.$slider.find('.carousel-inner');
+                    this.angTpl = $('#tpl-slider-item').html();
+                        
 				},
                 
 
@@ -195,41 +354,10 @@ var CJ = CJ || {};
 				 */
 				html : function (set) {
 
-					// vars
-					var full_src,
-					link,
-					listItem = [],
-					_self = this,
-					html,
-					linkHtml,
-					ct = 0;
-
-					//LOOP THROUGH DATA
-					$.each(set, function (i, photo) {
-
-						//LINK TO IMAGE SOURCE
-						full_src = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_" + "c.jpg";
-						link = "http://www.flickr.com/photos/100879861@N05/" + photo.id + "/in/set-72157635776920973/lightbox/";
-                        
-                        if (ct === 0) {
-                            linkHtml = '<div class="item active"><img src="' + full_src + '" + src="" + data-title="' + photo.title + '" /></div>';
-                        }
-                        
-                        else {
-                            linkHtml = '<div class="item"><img data-src="' + full_src + '" data-title="' + photo.title + '" /></div>';
-                        }
-
-						listItem[ct] = linkHtml;
-
-						//increment array counter
-						ct += 1;
-
-					});
+                    var html;
+                                        
+                    html = Mustache.to_html(this.angTpl, set);
                     
-                    // build html string
-                    html = '<div class="carousel-inner">' + listItem.join('') + '</div>';
-					html +=  '<a class="left carousel-control" href="#slider" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control" href="#slider" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>';   
-					
                     return html;
 
 				},
@@ -244,7 +372,7 @@ var CJ = CJ || {};
 				 * @public
 				 */
 				inject : function (html) {
-					this.$slider.empty().append(html);
+					this.$sliderInner.empty().append(html);
 				},
 
                 /**
@@ -270,11 +398,10 @@ var CJ = CJ || {};
                         
                         var $photoDiv = $('#weddingPhotos'),
                         $thumb,
-                        index,    
-                        _self = this;		
+                        index;	
                         
                         // click event for thumbnail
-                        $photoDiv.find('a.thumbnail').on("click.launchModal", function (e) {
+                        $photoDiv.find('a.thumbnail').on("click.launchModal", function () {
                             
                             $thumb = $(this);
                             
@@ -283,10 +410,9 @@ var CJ = CJ || {};
                             $('#slider').carousel(index);
                             
                             //launch the modal
-                            _slider.modal(e);
+                            _slider.modal();
                             
                         });
-
                         
                     }                        
                      
@@ -304,10 +430,11 @@ var CJ = CJ || {};
 				 */
 				instantiate : function (_slider) {
                     
-                    var _self = this;
+                    var _self = this,
+                        $firstItem = _slider.$slider.find('.item:first');
                                         
                     // instantiate flexslider
-                    _slider.$slider.append()
+                    _slider.$slider
                     .addClass('carousel')
                     .carousel({
                         interval: false
@@ -315,7 +442,11 @@ var CJ = CJ || {};
                     
                     _slider.$slider.on('slide.bs.carousel', function (e) {
                         _self.slide(e);
-                    });                                                            
+                    });                       
+
+                    $firstItem.addClass('active');
+                    $firstItem.find('img').unveil();
+                    
 				},
                 
 				/**
@@ -346,17 +477,17 @@ var CJ = CJ || {};
 				 * Modified: 08/29/2013
 				 *
 				 * @method modal
-                 * @param {object} event - slider event object
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */ 
-                modal: function (e) {
+                modal: function () {
                     
                     var title = $('#weddingPhotos .active a').data('title');
                     
                     this.$modal = $('#myModal');
                     this.$modal.find('.modal-title').html(title);
                     this.$modal.modal('show');
+                    
                 }
                 
                 
@@ -394,8 +525,7 @@ var CJ = CJ || {};
 					// inject into DOM
 					this.inject(html);
                     
-                    // instantiate the slider
-					//this.instantiate(this);
+                    this.$tab.find("img").unveil(50);
 
 				},
 
@@ -407,10 +537,10 @@ var CJ = CJ || {};
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				setup : function (_photoset) {
+				setup : function () {
 					
                     this.$tab = $('#gallery');
-                    this.events.bind(_photoset);
+                    this.angTpl = $('#tpl-thumbnail-item').html();
                     
 				},
 
@@ -425,37 +555,11 @@ var CJ = CJ || {};
 				 */
 				html : function (set) {
 
-					// vars
-					var full_src,
-					link,
-					listItem = [],
-					_self = this,
-					html,
-					linkHtml,
-					ct = 0;
-
-					//LOOP THROUGH DATA
-					$.each(set, function (i, photo) {
-
-						//LINK TO IMAGE SOURCE
-						full_src = "http://farm" + photo.farm + ".static.flickr.com/" + photo.server + "/" + photo.id + "_" + photo.secret + "_" + "q.jpg";
-						link = "http://www.flickr.com/photos/100879861@N05/" + photo.id + "/in/set-72157635776920973/lightbox/";
-
-						linkHtml = '<li class="col-xs-6 col-sm-3 col-md-2"><a class="thumbnail"><img src="' + full_src + '" class="lazy" /></a></li>';
-
-						listItem[ct] = linkHtml;
-
-						//increment array counter
-						ct += 1;
-
-						//PLACE IMAGE IN IMAGE TAG AND APPEND TO IMAGES DIV
-						//$("<img/>").attr("src", full_src).attr('width', 200).addClass('lazy').appendTo("#slider").wrap(('<li class="col-md-3"><a class="thumbnail" data-remote="' + link +'" data-toggle="modal" data-target="#myModal"></a></li>'))
-
-					});
-
-					// build html string
-					html = listItem.join('');
-					return html;
+                    var html;
+                                        
+                    html = Mustache.to_html(this.angTpl, set);
+                    
+                    return html;
 
 				},
 
@@ -470,45 +574,9 @@ var CJ = CJ || {};
 				 */
 				inject : function (html) {
 					this.$tab.empty().append(html);
-				},
-                
-                /**
-                 * events object.
-                 * Modified: 01/25/2014
-                 *
-                 * @type {object}
-                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
-                 * @public
-                 */
-                 events : {
-                     
-                    bind: function (_photoset) {
-                        
-                        var $photoDiv = $('#weddingPhotos'),
-                        setID,
-                        img,
-                        path,
-                        $navLink,
-                        $navLi,    
-                        _self = this;		
-                        
-                        $photoDiv.find('.nav a').on("click.getPhotoSet", function (e) {
-                            $navLink = $(this);
-                            setID = $navLink.data('setid');
-                            $navLi = $navLink.parent();
-                            $navLi.addClass('active').siblings().removeClass('active');
-                            
-                            _photoset.load(setID);
-                            e.preventDefault();
-                        });
-
-                        
-                    }                        
-                     
-                 }
+				}
 
 			}
-
 		}
 	};
 

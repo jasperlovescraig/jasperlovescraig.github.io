@@ -124,6 +124,18 @@ section#weddingPhotos #gallery li:hover {
   cursor: pointer;
 }
 
+section#honeymoonPhotos { 
+	background-color: #f8f8f8; 
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+}
+
+section#honeymoonPhotos .main {
+    margin: 25px 15px 0 0;
+}
+
+section#honeymoonPhotos h2 { margin-bottom: 50px; }
+
 /*
 #myModal .modal-dialog { width: 900px; }
 #myModal .item { width: 830px; }
@@ -133,3 +145,5 @@ section#weddingPhotos #gallery li:hover {
     text-align: center;
     margin: 0 auto;
 }
+
+#footer { padding: 20px 0 0 0; }

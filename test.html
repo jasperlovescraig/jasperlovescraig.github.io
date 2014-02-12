@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<!--[if IE 8]> <html class="ie lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]> <html class="ie ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+
+<title>
+    {Page Title Here} - Everyday Health
+</title>
+
+<meta name="description" content="{page description}">
+<meta name="keywords" content="{page  keywords}">
+<meta name="page-guid" content="{page guid}">
+<meta name="og:title" content="{page title here} - Everyday Health">
+<meta name="og:description" id="fbdescription" content="{page description}">
+<meta name="og:url" id="fburl" content="{page url}">
+<meta property="og:type" content="article">
+<meta property="og:image" content="http://images.agoramedia.com/everydayhealth/gcms/EH_social_300.png">
+<meta property="og:site_name" content="EverydayHealth.com">
+<meta property="fb:app_id" content="135346036490186">
+<meta property="fb:admins" content="">
+    
+    
+</head>
+
+
+<body>
+
+<div id="testArea"><ul></ul></div>    
+    
+
+
+<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>    
+<script src="mustache.js"></script>
+      
+
+<script> 
+var apiKey = '28a9103300057a9efeda07f46594bd53',
+    setID = setID != null ? setID : '72157635771860486';
+    
+$.getJSON('http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=' + apiKey + '&photoset_id=' + setID + '&format=json&jsoncallback=?', function(data) {
+    var template = $('#tpl-thumbnail-item').html();
+    var html = Mustache.to_html(template, data);
+    $('#testArea').html(html);
+}); 
+    
+
+</script>
+    
+<script id="tpl-thumbnail-item" type="text/template">
+   {{#photoset.photo}}
+    <li class="col-xs-6 col-sm-3 col-md-2">
+        <a class="thumbnail">
+            <img src="http://dummyimage.com/1x1/000/fff" 
+                data-src="http://farm{{farm}}.static.flickr.com/{{server}}/{{id}}_{{secret}}_q.jpg" class="lazy" />
+        </a>
+    </li>
+   {{/photoset.photo}}
+</script>       
+ <script id="tpl-thumbnail-item" type="text/template">
+   {{#photoset.photo}}
+    <li class="col-xs-6 col-sm-3 col-md-2">
+        <a class="thumbnail">
+            <img src="http://dummyimage.com/1x1/000/fff" 
+                data-src="http://farm{{farm}}.static.flickr.com/{{server}}/{{id}}_{{secret}}_q.jpg" class="lazy" />
+        </a>
+    </li>
+   {{/photoset.photo}}
+</script> 
+    
+</body>    
+</html>
