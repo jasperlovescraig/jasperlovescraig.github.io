@@ -86,7 +86,6 @@ var CJ = CJ || {};
             // init image unveil plugin
             $("img").unveil(50);             
             
-
 		},
 
         /**
@@ -103,137 +102,93 @@ var CJ = CJ || {};
 			 * init the photoset
 			 * Modified: 01/25/2014
 			 *
-			 * @method load
-			 * @param {string} setID - set id number
+			 * @method init
 			 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 			 * @public
 			 */
-			init : function () {
+			init : function () {                
                 
                 // setup the photoset object
-                this.objectInit();
+                this.setup();
                 
-                // bind events
-                this.events.bind(this);
+                // only load set if it is not in session storage already
+                if (this.storedSet !== null) {
+                    
+                    // load the tab with photoset
+                   this.tab.load.call(this, this.storedSet);
+                    
+                }                                                                                            
+                
+                else {
+                   this.load(this.defaultSet, true, false);  
+                    
+                }                  
+                
+                // init events
+                this.events.init(this);
+                
             },
 
             /**
-             * Initialize objects
+             * Setup the photoset object
              * Modified: 01/25/2014
              *
-             * @method objectInit
+             * @method setup
              * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
              * @public
              */
-			objectInit : function () {
+			setup : function () {
                 
                 // twitter api key
                 this.apiKey = '28a9103300057a9efeda07f46594bd53';
                 
-                // this will store the jqxhr object
-                this.jqxhr = {};
+                // default set to load
+                this.defaultSet = '72157635771860486';
+                    
+                // is set Loaded?
+                this.storedSet =  CJ.Utilities.storage.session.get(this.defaultSet);
                 
-                // this will store the given photoset data that is returned
-                this.theData = {};
-                
-                // call the wedding load method
-                this.wedding.load(null, this);                
-                
-                // call the honeymoon load method
-                this.honeymoon.load(null, this);
-
 			},
             
-            
-            wedding : {
 
-                /**
-                 * Loads the given twitter wedding photo set
-                 * Modified: 01/25/2014
-                 *
-                 * @method load
-                 * @param {string} setID - set id number
-                 * @param {object} _photoset - Reference to CJ.Photo.Photoset
-                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
-                 * @public
-                 */
-                load : function (setID, _photoset) {
-    
-                    var _self = this,
-                        apiCall
-                        
-                    setID = setID !== null ? setID : '72157635771860486';    
-                                                           
-                    if (sessionStorage.getItem(setID) !== null) {                         
-                        _photoset.theData = JSON.parse(sessionStorage.getItem(setID));
-                        _photoset.tab.load(_photoset.theData, _self);
-                        _photoset.slider.load(_photoset.theData);                            
-                        
+            /**
+             * load the given twitter wedding photo set
+             * Modified: 01/25/2014
+             *
+             * @method load
+             * @param {string} setID - set id number
+             * @param {boolean} loadTab - Load tab with photoset?
+             * @param {boolean} loadSlider - Load slider with photoset?
+             * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+             * @public
+             */
+            load : function (setID, loadTab, loadSlider) {
+
+                var _self = this,
+                    apiCall;
+                    
+                apiCall = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=" + _self.apiKey + "&photoset_id=" + setID + "&format=json&jsoncallback=?";                    
+                                                       
+                    
+                $.getJSON(apiCall).done(function(data) {                    
+                    
+                    if (loadTab) {
+                        // load the tab with photoset
+                        _self.tab.load.call(_self, data);
                     }
-
-                    else {
-                         
-                        apiCall = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=" + _photoset.apiKey + "&photoset_id=" + setID + "&format=json&jsoncallback=?";
-                        
-                        _photoset.jqxhr = $.getJSON(apiCall, function () {});
-                        
-                        _photoset.jqxhr.success(function(data) {
-                            sessionStorage.setItem(setID, JSON.stringify(data));
-                            _photoset.tab.load(data, _self);
-                            _photoset.slider.load(data.theData);                              
-                        });
-                            
-                    }                                      
-    
-                },
-                
-                /**
-                 * Make ajax call to get the wedding photo set
-                 * Modified: 01/25/2014
-                 *
-                 * @method load
-                 * @param {string} setID - set id number
-                 * @param {object} _photoset - Reference to CJ.Photo.Photoset
-                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
-                 * @public
-                 */                
-                get : function (setID, _photoset) {
+                    
+                    if (loadSlider) {
+                        // load the slider with photoset
+                        _self.slider.load(data);
+                    }
+                    
+                    // store result in session storage
+                    CJ.Utilities.storage.session.set(setID, data);                        
+                                                          
+                });                                                                                     
                     
 
-                }
-                
-            },
-            
-            honeymoon : {
-                
-                /**
-                 * Loads the given twitter honeymoon photo set
-                 * Modified: 01/25/2014
-                 *
-                 * @method load
-                 * @param {string} setID - set id number
-                 * @param {object} _photoset - Reference to CJ.Photo.Photoset
-                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
-                 * @public
-                 */
-                load : function (setID, _photoset) {
-    
-                    var apiCall;
-							
-                        setID = setID !== null ? setID : '72157635771860486';
-                        apiCall = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=" + _photoset.apiKey + "&photoset_id=" + setID + "&format=json&jsoncallback=?";
-    
-                    //SEND API CALL AND RETURN RESULTS TO A FUNCTION
-                    _photoset.jqxhr = $.getJSON(apiCall, function () {});
-                    
-                    _photoset.jqxhr.success(function(data) {                
-                        _photoset.theData = data;
-                        _photoset.slider.load(_photoset.theData);
-                    });
-    
-                }                
-                
-            },
+            },            
                                     
             /**
              * events object.
@@ -244,44 +199,108 @@ var CJ = CJ || {};
              * @public
              */
              events : {
-                 
-            
+
                 /**
-                 * bind photoset events
+                 * init event methods
                  * Modified: 01/25/2014
                  *
-                 * @method bind
+                 * @method init
+                 * @param {object} set - photoset object
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */
+                 init: function (_photoset) {
+                     this.weddingTabs(_photoset);
+                     this.honeymoonPhotos(_photoset);
+                 },
+            
+                /**
+                 * bind click event to wedding tabs
+                 * Modified: 01/25/2014
+                 *
+                 * @method weddingTabs
                  * @param {object} _photoset - Reference to CJ.Photo.Photoset
                  * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
                  * @public
                  */                 
-                bind: function (_photoset) {
+                weddingTabs: function (_photoset) {
                     
-                    var $content = $('#content'),
+                    var $content = $('#weddingPhotos'),
                     $navLink,
                     $navLi,
-                    navData;	
+                    navData,
+                    storedSet;
                     
                     $content.find('a[data-setid]').on("click.getPhotoSet", function (e) {
                         
                         $navLink = $(this);
                         navData = $navLink.data();
+                        storedSet =  CJ.Utilities.storage.session.get(navData.setid);
                         $navLi = $navLink.parent();
-                        $navLi.addClass('active').siblings().removeClass('active');                        
+                        $navLi.addClass('active').siblings().removeClass('active');
                         
-                        if (typeof _photoset[navData.setType].load === 'function') {
-                        
-                            // load the photoset 
-                            _photoset[navData.setType].load(navData.setid, _photoset);
-                                                        
-                        }
+                         // if set is in session storage
+                            if (storedSet !== null) {
+                                
+                                // load the tab with photoset
+                               _photoset.tab.load.call(_photoset, storedSet);
+                                
+                            }                                                                                            
+                            
+                            else {
+                                _photoset.load(navData.setid, true, false);  
+                                
+                            }                        
                         
                         e.preventDefault();
                         
                     });
 
                     
-                }                        
+                },
+                 
+                /**
+                 * bind click event to honeymoon photos link
+                 * Modified: 01/25/2014
+                 *
+                 * @method honeymoonPhotos
+                 * @param {object} _photoset - Reference to CJ.Photo.Photoset
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */                 
+                honeymoonPhotos: function (_photoset) {
+                    
+                    var $content = $('#honeymoonPhotos'),
+                    $navLink,
+                    navData,
+                    storedSet;
+                    
+                    $content.find('a[data-setid]').on("click.getPhotoSet", function (e) {
+                        
+                        $navLink = $(this);
+                        navData = $navLink.data();
+                        storedSet =  CJ.Utilities.storage.session.get(navData.setid);
+                        
+                         // if set is in session storage
+                            if (storedSet !== null) {
+                                
+                                // load the slider with photoset
+                               _photoset.slider.load(storedSet);
+                                
+                            }                                                                                            
+                            
+                            else {
+                                _photoset.load(navData.setid, false, true);  
+                                
+                            }                        
+                                                
+                        
+                        e.preventDefault();
+                        
+                    });
+
+                    
+                }                 
                  
              },            
             
@@ -319,10 +338,7 @@ var CJ = CJ || {};
 					this.inject(html);
                     
                     // instantiate the slider
-					this.instantiate(this, "1");
-                    
-                    // bind events
-                    this.events.bind(this);                    
+					this.instantiate(this); 
 
 				},
 
@@ -336,9 +352,8 @@ var CJ = CJ || {};
 				 */
 				setup : function () {
                     
-					this.$slider = $('#slider');
-                    this.$sliderInner = this.$slider.find('.carousel-inner');
-                    this.angTpl = $('#tpl-slider-item').html();
+				    this.$modal = $('#myModal');
+                    this.angTpl = $('#tpl-slider').html();
                         
 				},
                 
@@ -363,60 +378,18 @@ var CJ = CJ || {};
 				},
 
 				/**
-				 * Inject photoset tab to DOM <br>
+				 * Inject photoset thumbnails to DOM <br>
 				 * Modified: 08/29/2013
 				 *
 				 * @method inject
-				 * @param {string} html - Share bar HTML.
+				 * @param {string} html - slider HTML.
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
 				inject : function (html) {
-					this.$sliderInner.empty().append(html);
+					this.$modal.empty().append(html);
 				},
-
-                /**
-                 * events object.
-                 * Modified: 01/25/2014
-                 *
-                 * @type {object}
-                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
-                 * @public
-                 */
-                 events : {
-                     
-                    /**
-                     * bind events for slider <br>
-                     * Modified: 08/29/2013
-                     *
-                     * @method bind
-                     * @param {object} _slider - Reference to CJ.Photo.Photoset.slider
-                     * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
-                     * @public
-                     */                                          
-                    bind: function (_slider) {
-                        
-                        var $photoDiv = $('#weddingPhotos'),
-                        $thumb,
-                        index;	
-                        
-                        // click event for thumbnail
-                        $photoDiv.find('a.thumbnail').on("click.launchModal", function () {
-                            
-                            $thumb = $(this);
-                            
-                            index = $thumb.parent().index();
-                            
-                            $('#slider').carousel(index);
-                            
-                            //launch the modal
-                            _slider.modal();
-                            
-                        });
-                        
-                    }                        
-                     
-                 },                
+               
                 
 				/**
 				 * instantiate flexslider <br>
@@ -424,23 +397,21 @@ var CJ = CJ || {};
 				 *
 				 * @method instantiate
 				 * @param {object} _slider - Reference to CJ.Photo.Photoset.slider
-                 * @param {object} index - starging slide number
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
 				instantiate : function (_slider) {
                     
                     var _self = this,
-                        $firstItem = _slider.$slider.find('.item:first');
+                        $slider = _slider.$modal.find('#slider'),
+                        $firstItem = $slider.find('.item:first');
                                         
                     // instantiate flexslider
-                    _slider.$slider
-                    .addClass('carousel')
-                    .carousel({
+                    $slider.addClass('carousel').carousel({
                         interval: false
                     });
                     
-                    _slider.$slider.on('slide.bs.carousel', function (e) {
+                    $slider.on('slide.bs.carousel', function (e) {
                         _self.slide(e);
                     });                       
 
@@ -480,17 +451,12 @@ var CJ = CJ || {};
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */ 
-                modal: function () {
-                    
-                    var title = $('#weddingPhotos .active a').data('title');
+                modal: function () {               
                     
                     this.$modal = $('#myModal');
-                    this.$modal.find('.modal-title').html(title);
                     this.$modal.modal('show');
                     
                 }
-                
-                
 			},
             
             /**
@@ -511,21 +477,25 @@ var CJ = CJ || {};
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				load : function (set, _photoset) {
+				load : function (set) {
 
 					// vars
 					var html;
 
                     // setup tab
-					this.setup(_photoset);
+					this.tab.setup();
                     
                     // build tab html
-					html = this.html(set);
+					html = this.tab.html(set);
 
 					// inject into DOM
-					this.inject(html);
+					this.tab.inject(html);
                     
-                    this.$tab.find("img").unveil(50);
+                    // unveil images
+                    this.tab.$tab.find("img").unveil(50);
+                    
+                    // thumbnail binding
+                    this.tab.events.init.call(this);
 
 				},
 
@@ -574,7 +544,74 @@ var CJ = CJ || {};
 				 */
 				inject : function (html) {
 					this.$tab.empty().append(html);
-				}
+				},
+                
+                /**
+                 * events object.
+                 * Modified: 01/25/2014
+                 *
+                 * @type {object}
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */                  
+                events: {
+                    
+                    /**
+                     * init methods <br>
+                     * Modified: 08/29/2013
+                     *
+                     * @method init
+                     * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                     * @public
+                     */                    
+                    init: function() {
+                        this.tab.events.thumbnail(this);
+                    },
+                    
+                    /**
+                     * thumbnail click method <br>
+                     * Modified: 08/29/2013
+                     *
+                     * @method init
+                     * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                     * @public
+                     */                      
+                      thumbnail: function (_photoset) {
+                        
+                        var $photoDiv = $('#weddingPhotos'),
+                            index,
+                            navData = $photoDiv.find('li.active a[data-setid]').data(),
+                            storedSet =  CJ.Utilities.storage.session.get(navData.setid);
+                        
+                        // click event for thumbnail
+                        $photoDiv.find('a.thumbnail').on("click.launchModal", function () {                            
+                            
+                            // get the index of thumbnail
+                            index =  $(this).parent().index();   
+                            
+                            // only load set if it is not in session storage already
+                            if (storedSet !== null) {
+                                
+                                // load the tab with photoset
+                                _photoset.slider.load(storedSet);  
+                                
+                            }                                                                                            
+                            
+                            else {
+                                _photoset.load(navData.setid, false, true);                                
+                            }
+                            
+                            // launch the carousel
+                            $('#slider').carousel(index);                            
+                            
+                            //launch the modal
+                            _photoset.slider.modal();
+                            
+                            
+                        });                
+                    }
+                    
+                }                
 
 			}
 		}
