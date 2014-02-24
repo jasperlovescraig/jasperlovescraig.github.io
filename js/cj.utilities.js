@@ -19,7 +19,7 @@ var CJ = CJ || {};
  * @function
  * @param {object} $ - Global jQuery object.
  */
-(function ($) {
+(function ($, w) {
 
 	// strict js
 	'use strict';
@@ -57,7 +57,75 @@ var CJ = CJ || {};
                 'scrollTop': $a.offset().top
             }, 1200, 'swing');            
 
-		}
+		},
+        
+        /**
+		 * Storage object.
+		 * Modified: 01/25/2014
+		 *
+		 * @type {object}
+		 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+		 * @public
+		 */        
+        storage: {
+            
+            
+            /**
+             * Storage session object.
+             * Modified: 01/25/2014
+             *
+             * @type {object}
+             * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+             * @public
+             */                 
+            session: {
+                
+                /**
+                 * store json object as string using sessionStorage
+                 * Modified: 01/25/2014
+                 *
+                 * @method set
+                 * @param {string} key - name of session storage item
+                 * @param {object} obj - json object
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */ 
+                set: function (key, obj) {
+                    
+                    // convert json object to string
+                    obj = JSON.stringify(obj);
+                    
+                    w.sessionStorage.setItem(key, obj);                    
+                
+                },
+                
+                /**
+                 * returns json object stored via sessionStorage
+                 * Modified: 01/25/2014
+                 *
+                 * @method get
+                 * @param {string} key - name of session storage item
+                 * @returns {object} storageObj - 
+                 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
+                 * @public
+                 */                 
+                get: function (key) {
+                    
+                    var storageObj = {};
+                    
+                    // get session storage item value 
+                    storageObj = w.sessionStorage.getItem(key);
+                    
+                    // convert to json object
+                     storageObj = JSON.parse(storageObj);
+                    
+                    return storageObj;
+                    
+                }
+                
+            }
+            
+        }
         
 	};
 
