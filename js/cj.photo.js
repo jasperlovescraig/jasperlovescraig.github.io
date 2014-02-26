@@ -80,11 +80,15 @@ var CJ = CJ || {};
             // click event for thumbnail
             this.$siteNav.find('a').on("click.anchor", function (e) {
                 e.preventDefault();
-                CJ.Utilities.smoothAnchors(e);     
+                CJ.Utilities.smoothAnchors(e.target.hash);     
             });
             
             // init image unveil plugin
-            $("img").unveil(50);             
+            $("img").unveil(50);
+            
+            $('#myModal').on('hidden', function(){
+                $(this).data('modal', null);
+            });            
             
 		},
 

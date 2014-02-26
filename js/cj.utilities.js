@@ -50,11 +50,11 @@ var CJ = CJ || {};
 		 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 		 * @public
 		 */
-		smoothAnchors : function (event) {
-            var $a = $(event.target.hash);
+		smoothAnchors : function (hash) {
+            var $div = $(hash);
             
             $('html, body').stop().animate({
-                'scrollTop': $a.offset().top
+                'scrollTop': $div.offset().top
             }, 1200, 'swing');            
 
 		},

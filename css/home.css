@@ -28,7 +28,7 @@ section#vitals {
 	border-bottom:1px solid #dfdfdf;
 	text-align: center;
 }
-
+section#vitals h2 { font-size: 18px; }
 section#vitals ul { 
 	list-style: none; 
 	padding: 0;
@@ -39,6 +39,7 @@ section#howWeMet {
 	padding: 5px 15px 10px;
 	border-bottom:1px solid #dfdfdf;
 }
+
 
 section#howWeMet p {
 	padding: 0 4em;
@@ -80,10 +81,6 @@ section#weddingVideos .nav a { padding: 0 8px; }
 
 section#weddingVideos header {   
     margin-bottom: 25px;
-}
-
-section#weddingPhotos {
-
 }
 
 section#weddingPhotos h2 { margin-bottom: 25px; }
@@ -136,10 +133,33 @@ section#honeymoonPhotos .main {
 
 section#honeymoonPhotos h2 { margin-bottom: 50px; }
 
-/*
-#myModal .modal-dialog { width: 900px; }
-#myModal .item { width: 830px; }
-*/
+section#ourBaby { margin-top: 25px; }
+
+section#ourBaby h2 { 
+    font-size: 20px; 
+}
+
+section#ourBaby h3 { 
+    font-family: stencil-std, sans-serif;
+	font-size: 16px; 
+	color: #8B4789; 
+    margin: 0 17px;
+}
+
+section#ourBaby #sonogram-carousel,
+section#ourBaby .latest {
+    margin-top:40px;   
+}
+
+section#ourBaby .carousel-caption { bottom: auto; top: -10px; font-weight: bold;  font-size: 18px;}
+
+#myModal .baby-modal h3 {
+	font-family: stencil-std, sans-serif;
+	font-size: 20px; 
+    padding: 0 50px;
+	color: #8B4789;     
+}
+
 
 #myModal .item img { 
     text-align: center;
