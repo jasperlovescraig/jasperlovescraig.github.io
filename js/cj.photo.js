@@ -84,11 +84,7 @@ var CJ = CJ || {};
             });
             
             // init image unveil plugin
-            $("img").unveil(50);
-            
-            $('#myModal').on('hidden', function(){
-                $(this).data('modal', null);
-            });            
+            $("img").unveil(50);                 
             
 		},
 
@@ -455,9 +451,10 @@ var CJ = CJ || {};
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */ 
-                modal: function () {               
+                modal: function () {                                                   
                     
-                    this.$modal = $('#myModal');
+                    this.$modal = $('#myModal');                            
+                    
                     this.$modal.modal('show');
                     
                 }

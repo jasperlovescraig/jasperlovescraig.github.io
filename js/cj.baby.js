@@ -119,7 +119,7 @@ var CJ = CJ || {};
             },
 
             /**
-             * build html for tab
+             * build html for modal
              * Modified: 01/25/2014
              *
              * @method html
@@ -170,9 +170,10 @@ var CJ = CJ || {};
                  */
                 close : function (html) {
                     
-                    this.Modal.$modal.on('hidden.bs.modal', function (e) {
-                        console.dir(e);
-                        // CJ.Utilities.smoothAnchors('#ourBaby');
+                    this.Modal.$modal.find('.modal-footer button').on('click.close', function (e) {
+
+                        CJ.Utilities.smoothAnchors('#ourBaby');
+                        
                     })
                 },                 
                 
