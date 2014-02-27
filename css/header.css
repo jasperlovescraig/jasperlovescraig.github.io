@@ -33,7 +33,7 @@ header#siteHeader {
 }       
 
 /* bootstrap medium devices */
-@media (min-width: 768px) {
+@media (min-width: 850px) {
     
     header#siteHeader {  
         padding: 20px 0 50px; 

@@ -120,7 +120,7 @@ var CJ = CJ || {};
                 }                                                                                            
                 
                 else {
-                   this.load(this.defaultSet, true, false);  
+                   this.load(this.defaultSet, 0, true, false);  
                     
                 }                  
                 
@@ -291,7 +291,7 @@ var CJ = CJ || {};
                             }                                                                                            
                             
                             else {
-                                _photoset.load(navData.setid, false, true);  
+                                _photoset.load(navData.setid, 0, false, true);  
                                 
                             }                        
                                                 
@@ -341,6 +341,8 @@ var CJ = CJ || {};
                     
                     // instantiate the slider
 					this.instantiate(this, startingSlide); 
+                    
+                    this.modal.call(this);
 
 				},
 
@@ -355,6 +357,7 @@ var CJ = CJ || {};
 				setup : function () {
                     
 				    this.$modal = $('#myModal');
+                    this.$modal.empty();
                     this.angTpl = $('#tpl-slider').html();
                         
 				},
@@ -389,7 +392,7 @@ var CJ = CJ || {};
 				 * @public
 				 */
 				inject : function (html) {
-					this.$modal.empty().append(html);
+					this.$modal.append(html);
 				},
                
                 
