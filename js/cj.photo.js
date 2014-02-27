@@ -122,9 +122,7 @@ var CJ = CJ || {};
                 else {
                    this.load(this.defaultSet, true, false);  
                     
-                }
-                
-
+                }                  
                 
                 // init events
                 this.events.init(this);
@@ -159,12 +157,13 @@ var CJ = CJ || {};
              *
              * @method load
              * @param {string} setID - set id number
+             * @param {string} index - starting slide
              * @param {boolean} loadTab - Load tab with photoset?
              * @param {boolean} loadSlider - Load slider with photoset?
              * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
              * @public
              */
-            load : function (setID, loadTab, loadSlider) {
+            load : function (setID, index, loadTab, loadSlider) {
 
                 var _self = this,
                     apiCall;
@@ -181,7 +180,7 @@ var CJ = CJ || {};
                     
                     if (loadSlider) {
                         // load the slider with photoset
-                        _self.slider.load(data);
+                        _self.slider.load(data, index);
                     }
                     
                     // store result in session storage
@@ -250,7 +249,7 @@ var CJ = CJ || {};
                             }                                                                                            
                             
                             else {
-                                _photoset.load(navData.setid, true, false);  
+                                _photoset.load(navData.setid, 0, true, false);  
                                 
                             }                        
                         
@@ -322,10 +321,11 @@ var CJ = CJ || {};
 				 *
 				 * @method load
 				 * @param {object} set - photoset object
+                 * @param {string} startingSlide - startingSlide
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				load : function (set) {
+				load : function (set, startingSlide) {
 
 					// vars
 					var html;
@@ -340,7 +340,7 @@ var CJ = CJ || {};
 					this.inject(html);
                     
                     // instantiate the slider
-					this.instantiate(this); 
+					this.instantiate(this, startingSlide); 
 
 				},
 
@@ -402,23 +402,22 @@ var CJ = CJ || {};
 				 * @author Craig Joseph Lucas <http://www.linkedin.com/in/craigjosephlucas>
 				 * @public
 				 */
-				instantiate : function (_slider) {
+				instantiate : function (_slider, index) {
                     
                     var _self = this,
                         $slider = _slider.$modal.find('#slider'),
                         $firstItem = $slider.find('.item:first');
                                         
-                    // instantiate flexslider
-                    //$slider.addClass('carousel').carousel({
-                      //  interval: false
-                    //});
-                    
+                                        
                     $slider.on('slide.bs.carousel', function (e) {
                         _self.slide(e);
-                    });                       
+                    });
+                                     
 
                     $firstItem.addClass('active');
                     $firstItem.find('img').unveil();
+                    
+                    $slider.carousel(index, { interval: "pause" });
                     
 				},
                 
@@ -595,23 +594,15 @@ var CJ = CJ || {};
                             // only load set if it is not in session storage already
                             if (storedSet !== null) {
                                 
-                                $('#slider').carousel(index);
-                                
                                 // load the tab with photoset
-                                _photoset.slider.load(storedSet);
-                                        
+                                _photoset.slider.load(storedSet, index);
+                                      
                                 
                             }                                                                                            
                             
                             else {
-                                _photoset.load(navData.setid, false, true);                                
+                                _photoset.load(navData.setid, index, false, true);                                
                             }
-                            
-                            // launch the carousel
-                            $('#slider').carousel(index);                            
-                            
-                            //launch the modal
-                            _photoset.slider.modal();
                             
                             
                         });                
