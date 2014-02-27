@@ -593,8 +593,11 @@ var CJ = CJ || {};
                             // only load set if it is not in session storage already
                             if (storedSet !== null) {
                                 
+                                $('#slider').carousel(index);
+                                
                                 // load the tab with photoset
-                                _photoset.slider.load(storedSet);  
+                                _photoset.slider.load(storedSet);
+                                        
                                 
                             }                                                                                            
                             
