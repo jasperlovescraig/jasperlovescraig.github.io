@@ -151,15 +151,22 @@ section#ourBaby .latest {
     margin-top:40px;   
 }
 
-section#ourBaby .carousel-caption { bottom: auto; top: -10px; font-weight: bold;  font-size: 18px;}
+section#ourBaby .carousel-caption { 
+    bottom: auto; 
+    top: -10px; 
+    font-weight: bold;  
+    font-size: 18px;
+}
 
 #myModal .baby-modal h3 {
 	font-family: stencil-std, sans-serif;
 	font-size: 20px; 
     padding: 0 50px;
-	color: #8B4789;     
+	color: #8B4789;
+    text-align: center;
 }
 
+#myModal .baby-modal img.main { display: block; margin: 0 auto; }
 
 #myModal .item img { 
     text-align: center;

@@ -135,7 +135,7 @@ var CJ = CJ || {};
                     content = this.Modal.$content.find('.latest').html();
                 
                 // header
-                html = '<div class="modal-dialog"><div class="modal-content baby-modal text-center">';
+                html = '<div class="modal-dialog"><div class="modal-content baby-modal">';
                 html += '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h2 class="modal-title" id="myModalLabel">'+ title +'</h2></div>';
                 
                 html += '<div class="modal-body flexslider">'+ intro + content +'</div>';
