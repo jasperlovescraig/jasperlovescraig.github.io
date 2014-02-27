@@ -122,7 +122,9 @@ var CJ = CJ || {};
                 else {
                    this.load(this.defaultSet, true, false);  
                     
-                }                  
+                }
+                
+
                 
                 // init events
                 this.events.init(this);
@@ -407,9 +409,9 @@ var CJ = CJ || {};
                         $firstItem = $slider.find('.item:first');
                                         
                     // instantiate flexslider
-                    $slider.addClass('carousel').carousel({
-                        interval: false
-                    });
+                    //$slider.addClass('carousel').carousel({
+                      //  interval: false
+                    //});
                     
                     $slider.on('slide.bs.carousel', function (e) {
                         _self.slide(e);
