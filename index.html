@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="css/header.css" />
 <link rel="stylesheet" href="css/grid.css" />
 <link rel="stylesheet" href="css/home.css" />
+<link rel="shortcut icon" href="gfx/favicon.png" />
+    
 <script src="https://use.edgefonts.net/mr-bedfort;stencil-std;abril-fatface;droid-sans.js"></script>
 
 </head>
@@ -19,7 +21,7 @@
        
        <h1>The Lucas Family</h1>
         <div id="siteLogo">
-            <img class="text-center" src="https://dl.dropboxusercontent.com/u/17615192/Website/craiglovesjasper/gfx/CL-heartphoto.png" />
+            <img class="text-center" src="https://dl.dropboxusercontent.com/u/17615192/Website/craiglovesjasper/gfx/CL-heartphoto.png" width="75" height="73" />
         </div>
        <div class="ourdate text-center">Est. August 10, 2013</div>
        
@@ -41,7 +43,7 @@
      <section id="hello">
 			<div class="row">
 				<div class="col-sm-5 col-md-5">
-					<img class="img-responsive" src="https://dl.dropboxusercontent.com/u/17615192/Website/craiglovesjasper/photos/jasperandcraigwedding-198.jpg" />
+					<img class="img-responsive" src="https://dl.dropboxusercontent.com/u/17615192/Website/craiglovesjasper/photos/jasperandcraigwedding-198.jpg" width="331" height="223" />
 				</div>
 				<div class="col-sm-7 col-md-7" id="siteMessage">
 						<p><strong>To our family and friends... </strong></p>
@@ -117,28 +119,28 @@ How did we actually fall for each other? Well you can ask both of us and most li
                   <div class="carousel-inner">
                       
                     <div class="item active">
-                      <img src="photos/baby/announcement.JPG" alt="..." />
+                      <img src="photos/baby/announcement.JPG" width="548" height="365" alt="Craig kissing my belly" />
                     </div>                      
                     <div class="item">
-                      <img src="photos/baby/week7.jpg" alt="Week 7" />
+                      <img src="photos/baby/week7.jpg" alt="Week 7" width="600" height="450" />
                       <div class="carousel-caption">
                         Week 7
                       </div>
                     </div>
                    <div class="item">
-                      <img src="photos/baby/week8b.jpg" alt="Week 8" />
+                      <img src="photos/baby/week8b.jpg" alt="Week 8" width="548" height="411" />
                       <div class="carousel-caption">
                         Week 8
                       </div>
                     </div>
                    <div class="item">
-                      <img src="photos/baby/week10b.jpg" alt="Week 10" />
+                      <img src="photos/baby/week10b.jpg" alt="Week 10" width="600" height="450" />
                       <div class="carousel-caption">
                         Week 10
                       </div>
                     </div>
                    <div class="item">
-                      <img src="photos/baby/week12.jpg" alt="Week 12" />
+                      <img src="photos/baby/week12.jpg" alt="Week 12" width="600" height="450" />
                       <div class="carousel-caption">
                         Week 12
                       </div>
@@ -162,7 +164,7 @@ How did we actually fall for each other? Well you can ask both of us and most li
                             <h3>Expected September 2014</h3>
                         </header>   
                         
-                        <img class="main text-center img-thumbnail img-responsive" src="photos/baby/recent.jpg" />
+                        <img class="main text-center img-thumbnail img-responsive" src="photos/baby/recent.jpg" width="314" height="235" />
                         <p class="text-center">Our latest sonogram at 12 weeks</p>                       
                     </div>
                     
@@ -311,8 +313,8 @@ How did we actually fall for each other? Well you can ask both of us and most li
 
                 
                 <div class="col-sm-5 col-md-4 col-md-pull-8 text-center">
-					<img class="main img-rounded img-responsive" src="https://dl.dropboxusercontent.com/u/17615192/Website/jasperlovescraig.github.io/photos/hm-1.jpg" />
-                    <img class="main img-rounded img-responsive" src="https://dl.dropboxusercontent.com/u/17615192/Website/jasperlovescraig.github.io/photos/hm-2.jpg" />
+					<img class="main img-rounded img-responsive" src="https://dl.dropboxusercontent.com/u/17615192/Website/jasperlovescraig.github.io/photos/hm-1.jpg" width="311" height="196" />
+                    <img class="main img-rounded img-responsive" src="https://dl.dropboxusercontent.com/u/17615192/Website/jasperlovescraig.github.io/photos/hm-2.jpg" width="311" height="206" />
 				</div> 
                 
             <div class="clearfix"></div>
@@ -342,10 +344,10 @@ How did we actually fall for each other? Well you can ask both of us and most li
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src="js/mustache.js"></script>
 <script src="js/jquery.unveil.min.js"></script>
-<script src="js/cj.utilities.js"></script>
-<script src="js/cj.baby.js"></script>
-<script src="js/cj.photo.js"></script>
-<script src="js/cj.video.js"></script>
+<script src="js/cj.utilities.js" aysnc="true"></script>
+<script src="js/cj.baby.js" aysnc="true"></script>
+<script src="js/cj.photo.js" aysnc="true"></script>
+<script src="js/cj.video.js" aysnc="true"></script>
 
 
 <script id="tpl-slider" type="text/template">
@@ -386,7 +388,7 @@ How did we actually fall for each other? Well you can ask both of us and most li
     <li class="col-xs-6 col-sm-3 col-md-2">
         <a class="thumbnail">
             <img src="http://dummyimage.com/1x1/000/fff" 
-                data-src="http://farm{{farm}}.static.flickr.com/{{server}}/{{id}}_{{secret}}_q.jpg" class="lazy" />
+                data-src="http://farm{{farm}}.static.flickr.com/{{server}}/{{id}}_{{secret}}_q.jpg" class="lazy" width="150" height="150" />
         </a>
     </li>
    {{/photoset.photo}}
