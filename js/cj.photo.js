@@ -420,7 +420,7 @@ var CJ = CJ || {};
                     $firstItem.addClass('active');
                     $firstItem.find('img').unveil();
                     
-                    $slider.carousel(index, { interval: "pause" });
+                    $slider.carousel({interval: false}).carousel(index);
                     
 				},
                 

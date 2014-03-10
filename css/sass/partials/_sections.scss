@@ -1,0 +1,118 @@
+#content section {
+	padding: 5px 15px 10px;
+}
+
+section#hello {
+	padding: 25px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+	background: #f8f8f8;
+}
+
+section#hello img {
+	   -moz-transform: rotate(-2deg);
+		-webkit-transform:rotate(-2deg);
+		-o-transform:rotate(-2deg);
+		-ms-transform:rotate(-2deg);
+		box-shadow: 0 0 1em #dfdfdf;
+		margin: 0 1em;
+}
+
+section#hello p {
+	font-family: droid-sans, serif;
+	font-size: 16px; 
+}
+
+section#vitals {
+	background: #fff;
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+	text-align: center;
+}
+section#vitals h2 { font-size: 18px; }
+section#vitals ul { 
+	list-style: none; 
+	padding: 0;
+}
+
+section#howWeMet {
+	background: #fff;
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+}
+
+
+section#howWeMet p {
+	padding: 0 4em;
+	font-family: $paragraphFontFamily;
+	font-size: 16px; 
+        line-height: 24px;
+}
+
+section#ourFairyTale { 
+	background-color: #f8f8f8; 
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+}
+
+section#weddingVideos {
+	background: #FFF;
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+	text-align: center;		
+}
+
+section#weddingVideos .nav a { padding: 0 8px; }
+
+
+
+section#weddingVideos header {   
+    margin-bottom: 25px;
+}
+
+section#weddingPhotos h2 { margin-bottom: 25px; }
+
+section#weddingPhotos p {
+	padding: 0;
+	font-family: $paragraphFontFamily;
+	font-size: 16px; 
+    line-height: 24px;
+	margin-bottom: 25px;
+    text-align: center;
+}
+
+section#honeymoonPhotos { 
+	background-color: #f8f8f8; 
+	padding: 5px 15px 10px;
+	border-bottom:1px solid #dfdfdf;
+}
+
+section#honeymoonPhotos .main {
+    margin: 25px 15px 0 0;
+}
+
+section#honeymoonPhotos h2 { margin-bottom: 50px; }
+
+section#ourBaby { margin-top: 25px; }
+
+section#ourBaby h2 { 
+    font-size: 20px; 
+}
+
+section#ourBaby h3 { 
+    font-family: $sHeaderFontFamily;
+	font-size: 16px; 
+	color: #8B4789; 
+    margin: 0 17px;
+}
+
+section#ourBaby #sonogram-carousel,
+section#ourBaby .latest {
+    margin-top:40px;   
+}
+
+section#ourBaby .carousel-caption { 
+    bottom: auto; 
+    top: -10px; 
+    font-weight: bold;  
+    font-size: 18px;
+}

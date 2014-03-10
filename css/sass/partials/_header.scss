@@ -1,0 +1,80 @@
+
+
+header#siteHeader {  
+	padding: 20px 0 20px; 
+	border-bottom:1px solid #dfdfdf;
+	background: #FFF;
+	position: relative;
+}
+
+#siteHeader h1 { font-size: 2em; }
+#siteHeader .ourdate { font-size: 1em; }
+
+#siteHeader h1,
+#siteHeader .ourdate,
+#siteHeader img { position: relative; z-index: 1001; text-align:center; }
+
+#siteLogo {  
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+} 
+
+#siteNav {
+    text-align: center;
+    background-color: #fff;    
+}
+
+#siteNav a { 
+	font-family: $sHeaderFontFamily;
+	font-size: 1em; 
+    line-height: 1em;
+	color: #8B4789; 
+}       
+
+/* bootstrap medium devices */
+@media (min-width: 850px) {
+    
+    header#siteHeader {  
+        padding: 20px 0 50px; 
+    }    
+    
+    #siteLogo {  
+        text-align:center; 
+        position: relative;
+        left: -7px;
+        z-index: 1001;
+        width: 17.5%;
+        margin: 0 auto;
+        background-color: #fff;    
+    }     
+    
+    #siteNav { 
+        position: relative;
+        top: -81px;
+        margin-bottom: -81px;
+        border: none;
+        text-align: left;
+    }
+
+    #siteNav ul { 
+        margin-left: 0; 
+        width: 100%;
+        padding: 5px 0 0;
+        height: 51px;
+        border-color: #dfdfdf;
+        border-style: solid;
+        border-width: 1px 0;           
+    }
+
+
+	#navTheVideo, 
+	#navTheHoneymoon {
+		float: right;
+	}
+
+
+}
+
+
+

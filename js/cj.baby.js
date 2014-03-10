@@ -175,7 +175,7 @@ var CJ = CJ || {};
                         CJ.Utilities.smoothAnchors('#ourBaby');
                         
                     })
-                },                 
+                }                 
                 
             }           
 
