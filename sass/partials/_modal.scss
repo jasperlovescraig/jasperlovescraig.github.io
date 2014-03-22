@@ -1,0 +1,25 @@
+#myModal {
+ 
+    .item img { 
+        text-align: center;
+        margin: 0 auto;
+    }    
+
+    .baby-modal {
+        
+        h3 {
+	       font-family: $sHeaderFontFamily;
+	       font-size: 20px; 
+            padding: 0 50px;
+            color: #8B4789;
+            text-align: center;            
+        }
+
+        img.main {
+            display: block; 
+            margin: 0 auto; 
+        }
+        
+    }
+    
+}
