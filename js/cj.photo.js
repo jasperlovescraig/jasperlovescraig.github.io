@@ -168,7 +168,7 @@ var CJ = CJ || {};
                 var _self = this,
                     apiCall;
                     
-                apiCall = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=" + _self.apiKey + "&photoset_id=" + setID + "&user_id=100879861%40N05&format=json&jsoncallback=?";                    
+                apiCall = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=" + _self.apiKey + "&photoset_id=" + setID + "&user_id=100879861%40N05&format=json&jsoncallback=?";                    
                                                        
                     
                 $.getJSON(apiCall).done(function(data) {                    
